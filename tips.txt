@@ -1,0 +1,8 @@
+find datadog/integrations/*/assets/dashboards -name "*.json" -not -name "*_grafana.json" -not -name "*_summary.json" -exec sh -c "echo {} | sed 's/\.json/_grafana\.json/g' |xargs ls" \;
+find path/*/assets/dashboards/ -type f -exec bazel run -- -i -c 
+# Copy them to Charts
+# Step 1 mkdir
+find path/*/dashboards -type d -exec mkdir -p /Users/skoneru/src/grafana/dashboards/{} \;
+# Step 2 copy cp --parents will not work in mac, you have to use ditto
+find datadog/integrations/*/assets/dashboards -name "*_grafana.json" -exec ditto {} src/grafana/dashboards/{}  \;
+
